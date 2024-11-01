@@ -1,0 +1,211 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { motion, useAnimation, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { ChevronDown, Mail, Phone, MapPin, Github, Linkedin, Menu, X } from 'lucide-react';
+
+// Add font face declarations at the top of your component
+const FontStyles = () => (
+  <style jsx global>{`
+    @font-face {
+      font-family: 'Druk';
+      src: url('/fonts/DrukText-Medium.woff2') format('woff2');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    @font-face {
+      font-family: 'Druk';
+      src: url('/fonts/DrukText-Bold.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    @font-face {
+      font-family: 'Druk';
+      src: url('/fonts/DrukText-Heavy.woff2') format('woff2');
+      font-weight: 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* Apply Druk to headings by default */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Druk', sans-serif;
+    }
+  `}</style>
+);
+
+// Rest of the hooks remain the same
+const useSectionTracking = () => {
+  // ... existing code ...
+};
+
+const useMotionBackground = () => {
+  // ... existing code ...
+};
+
+// Update LoadingScreen to use Druk
+const LoadingScreen = ({ isLoading }) => (
+  <motion.div
+    className="fixed inset-0 z-50 flex items-center justify-center bg-black"
+    initial={{ opacity: 1 }}
+    animate={{ opacity: isLoading ? 1 : 0 }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 0.8 }}
+  >
+    <motion.div
+      className="w-20 h-20 border-4 border-white rounded-full border-t-transparent"
+      animate={{ rotate: 360 }}
+      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+    />
+  </motion.div>
+);
+
+// Update WelcomeAnimation to use Druk
+const WelcomeAnimation = ({ onComplete }) => (
+  <motion.div
+    className="fixed inset-0 z-40 flex items-center justify-center bg-black"
+    initial={{ opacity: 1 }}
+    animate={{ opacity: 0 }}
+    transition={{ duration: 0.8, delay: 2 }}
+    onAnimationComplete={onComplete}
+  >
+    <motion.h1
+      className="text-6xl font-bold text-white font-druk"
+      initial={{ scale: 0.5, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      Welcome
+    </motion.h1>
+  </motion.div>
+);
+
+// Update DynamicMenu to use Druk for menu items
+const DynamicMenu = ({ activeSection, changeSection }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <motion.div className="fixed top-4 left-4 z-30">
+      <motion.button
+        className="p-2 bg-white/10 rounded-full backdrop-blur-lg"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        {isOpen ? <X className="text-white" /> : <Menu className="text-white" />}
+      </motion.button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="absolute top-14 left-0 bg-white/10 backdrop-blur-lg rounded-lg p-4 w-48"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+          >
+            {['hero', 'about', 'skills', 'experience', 'contact'].map((section) => (
+              <motion.button
+                key={section}
+                className={`block w-full text-left p-2 rounded-lg mb-2 font-druk ${
+                  activeSection === section ? 'bg-white/20' : ''
+                }`}
+                whileHover={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
+                onClick={() => {
+                  changeSection(section);
+                  setIsOpen(false);
+                }}
+              >
+                {section.charAt(0).toUpperCase() + section.slice(1)}
+              </motion.button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+};
+
+// Rest of the components remain the same
+const ScrollProgress = () => {
+  // ... existing code ...
+};
+
+const Section = ({ children, isActive, id }) => {
+  // ... existing code ...
+};
+
+const Portfolio = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(true);
+  const { activeSection, isTransitioning, changeSection } = useSectionTracking();
+  const controls = useAnimation();
+
+  // ... rest of the existing code ...
+
+  return (
+    <div className="relative overflow-hidden">
+      <FontStyles />
+      {/* Rest of the existing JSX */}
+      <AnimatePresence>
+        {isLoading && <LoadingScreen isLoading={isLoading} />}
+        {!isLoading && showWelcome && (
+          <WelcomeAnimation onComplete={() => setShowWelcome(false)} />
+        )}
+      </AnimatePresence>
+
+      <ScrollProgress />
+      <DynamicMenu activeSection={activeSection} changeSection={changeSection} />
+
+      <MotionBackground isTransitioning={isTransitioning}>
+        <div className="relative z-10">
+          <AnimatePresence mode="wait">
+            {/* Hero Section with updated font classes */}
+            {activeSection === 'hero' && (
+              <Section id="hero" isActive={activeSection === 'hero'}>
+                <div className="flex flex-col justify-center items-center h-screen">
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 20,
+                      delay: 0.2
+                    }}
+                  >
+                    <motion.h1
+                      className="text-7xl font-bold mb-6 text-white/90 font-druk"
+                      whileHover={{
+                        scale: 1.05,
+                        textShadow: "0 0 8px rgba(255,255,255,0.5)"
+                      }}
+                    >
+                      Amal Augustine M
+                    </motion.h1>
+                  </motion.div>
+                  <motion.p
+                    className="text-2xl text-white/70 font-druk"
+                    initial={{ y: 50, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    Engineering Intern | Full Stack Developer
+                  </motion.p>
+                </div>
+              </Section>
+            )}
+
+            {/* Update other sections similarly */}
+            {/* ... rest of the sections ... */}
+          </AnimatePresence>
+        </div>
+      </MotionBackground>
+
+      {/* Navigation Dots remain unchanged */}
+    </div>
+  );
+};
+
+export default Portfolio;
