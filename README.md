@@ -1,4 +1,4 @@
-# Modern Portfolio Website
+# Modern Portfolio Website - Amal Augustine
 
 A sleek, responsive portfolio website built with Next.js, TypeScript, and Tailwind CSS.
 
@@ -36,7 +36,7 @@ A sleek, responsive portfolio website built with Next.js, TypeScript, and Tailwi
 
 1. Clone the repository
    ```
-   git clone https://github.com/yourusername/portfolio.git
+   git clone https://github.com/amalaugustineee/portfolio.git
    ```
 
 2. Install dependencies
@@ -60,7 +60,6 @@ A sleek, responsive portfolio website built with Next.js, TypeScript, and Tailwi
 - **Color Scheme**: Edit the colors in `tailwind.config.ts`
 - **Content**: Update the text in page components
 - **Projects**: Add your projects in `src/pages/projects.tsx`
-- **About**: Update your skills and experience in `src/pages/about.tsx`
 - **Contact**: Change contact information in `src/pages/contact.tsx`
 
 ## Deployment
@@ -69,7 +68,7 @@ This portfolio can be easily deployed to platforms like Vercel or Netlify with z
 
 ### Deploy on Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/yourusername/portfolio)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/amalaugustineee/portfolio)
 
 ## License
 
